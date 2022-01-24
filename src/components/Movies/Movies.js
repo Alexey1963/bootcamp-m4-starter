@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import MovieItem from '../MovieItem/MovieItem';
 import './Movies.css';
+import store from '../../redux/store';
+import { renderMovieList } from '../../redux/actions'
+import { connect } from 'react-redux';
 
 class Movies extends Component {
+    
     state = { 
         movies: [
             {
@@ -22,9 +26,11 @@ class Movies extends Component {
         ]
     }
     render() { 
+        const {arr} = this.props
+        console.log(arr)
         return ( 
             <ul className="movies">
-                {this.state.movies.map((movie) => (
+                {arr.movies.map((movie) => (
                     <li className="movies__item" key={movie.imdbID}>
                         <MovieItem {...movie} />
                     </li>
@@ -33,5 +39,11 @@ class Movies extends Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        arr: state
+    }
+}
  
-export default Movies;
+export default connect(mapStateToProps)(Movies);

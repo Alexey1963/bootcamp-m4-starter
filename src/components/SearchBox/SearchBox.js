@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
 import './SearchBox.css';
+import store from '../../redux/store';
+import { renderMovieList } from '../../redux/actions'
+import { connect } from 'react-redux';
 
 class SearchBox extends Component {
     state = {
-        searchLine: ''
+        searchLine: '',
+        api_key: 'acd003e3'
     }
     searchLineChangeHandler = (e) => {
         this.setState({ searchLine: e.target.value });
     }
-    searchBoxSubmitHandler = (e) => {
-        e.preventDefault();
+    searchBoxSubmitHandler = async (e) => {
+        if(e) {
+            e.preventDefault();  
+        }
+        const {searchLine, api_key} = this.state;
+        const res = await fetch(`http://www.omdbapi.com/?s=${searchLine}&apikey=${api_key}`);
+        const data = await res.json()
+        console.log(data)
+        this.props.refreshMovies(data.Search)
     }
+
     render() {
         const { searchLine } = this.state;
 
@@ -40,4 +52,16 @@ class SearchBox extends Component {
     }
 }
  
-export default SearchBox;
+function mapStateToProps(state) {
+    return {
+        all: state
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        refreshMovies: (list) => dispatch(renderMovieList(list))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBox);

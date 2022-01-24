@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './ListPage.css';
+import store from '../../redux/store';
+import { renderMovieList } from '../../redux/actions'
+import { connect } from 'react-redux';
 
 class ListPage extends Component {
     state = {
@@ -13,12 +16,14 @@ class ListPage extends Component {
         // TODO: запрос к сервер на получение списка
         // TODO: запросы к серверу по всем imdbID
     }
+    
     render() { 
+        console.log(this.props)
         return (
             <div className="list-page">
                 <h1 className="list-page__title">Мой список</h1>
                 <ul>
-                    {this.state.movies.map((item) => {
+                    {this.props.movies.map((item) => {
                         return (
                             <li key={item.imdbID}>
                                 <a href="https://www.imdb.com/title/tt0068646/" target="_blank">{item.title} ({item.year})</a>

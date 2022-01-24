@@ -4,6 +4,8 @@ import './MovieItem.css';
 class MovieItem extends Component {
     render() {
         const { title, year, poster } = this.props;
+        console.log(title, year, poster)
+        console.log(this.props)
         return (
             <article className="movie-item">
                 <img className="movie-item__poster" src={poster} alt={title} />
